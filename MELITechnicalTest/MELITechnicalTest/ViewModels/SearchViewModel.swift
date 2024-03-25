@@ -21,8 +21,7 @@ class SearchViewModel: ObservableObject {
     self.dependencies = dependencies
   }
   
-  func searchItem() async {
-    print(await dependencies.searchItemsUseCase.execute())
-    viewContent.texts = await dependencies.searchItemsUseCase.execute()
+  func searchItem(query: String) async {
+    viewContent.texts = await dependencies.searchItemsUseCase.execute(query: query)
   }
 }
