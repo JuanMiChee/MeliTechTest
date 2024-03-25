@@ -10,7 +10,6 @@
 		736AF1DA2BACAA290021BE81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736AF1D92BACAA290021BE81 /* AppDelegate.swift */; };
 		736AF1DC2BACAA290021BE81 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736AF1DB2BACAA290021BE81 /* SceneDelegate.swift */; };
 		736AF1DE2BACAA290021BE81 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736AF1DD2BACAA290021BE81 /* ViewController.swift */; };
-		736AF1E12BACAA290021BE81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 736AF1DF2BACAA290021BE81 /* Main.storyboard */; };
 		736AF1E32BACAA2B0021BE81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 736AF1E22BACAA2B0021BE81 /* Assets.xcassets */; };
 		736AF1E62BACAA2B0021BE81 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 736AF1E42BACAA2B0021BE81 /* LaunchScreen.storyboard */; };
 		736AF1F12BACAA2C0021BE81 /* MELITechnicalTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736AF1F02BACAA2C0021BE81 /* MELITechnicalTestTests.swift */; };
@@ -48,7 +47,6 @@
 		736AF1D92BACAA290021BE81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		736AF1DB2BACAA290021BE81 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		736AF1DD2BACAA290021BE81 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		736AF1E02BACAA290021BE81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		736AF1E22BACAA2B0021BE81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		736AF1E52BACAA2B0021BE81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		736AF1E72BACAA2B0021BE81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -125,7 +123,6 @@
 				736AF1D92BACAA290021BE81 /* AppDelegate.swift */,
 				736AF1DB2BACAA290021BE81 /* SceneDelegate.swift */,
 				736AF1DD2BACAA290021BE81 /* ViewController.swift */,
-				736AF1DF2BACAA290021BE81 /* Main.storyboard */,
 				736AF1E22BACAA2B0021BE81 /* Assets.xcassets */,
 				736AF1E42BACAA2B0021BE81 /* LaunchScreen.storyboard */,
 				736AF1E72BACAA2B0021BE81 /* Info.plist */,
@@ -313,7 +310,6 @@
 			files = (
 				736AF1E62BACAA2B0021BE81 /* LaunchScreen.storyboard in Resources */,
 				736AF1E32BACAA2B0021BE81 /* Assets.xcassets in Resources */,
-				736AF1E12BACAA290021BE81 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,14 +381,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		736AF1DF2BACAA290021BE81 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				736AF1E02BACAA290021BE81 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		736AF1E42BACAA2B0021BE81 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -535,7 +523,6 @@
 				INFOPLIST_FILE = MELITechnicalTest/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -563,7 +550,6 @@
 				INFOPLIST_FILE = MELITechnicalTest/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
