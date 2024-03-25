@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		733ADB682BB20AD900FF42D6 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733ADB672BB20AD900FF42D6 /* DetailViewController.swift */; };
 		736AF1DA2BACAA290021BE81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736AF1D92BACAA290021BE81 /* AppDelegate.swift */; };
 		736AF1DC2BACAA290021BE81 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736AF1DB2BACAA290021BE81 /* SceneDelegate.swift */; };
 		736AF1DE2BACAA290021BE81 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736AF1DD2BACAA290021BE81 /* ViewController.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		733ADB672BB20AD900FF42D6 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		736AF1D62BACAA290021BE81 /* MELITechnicalTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MELITechnicalTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		736AF1D92BACAA290021BE81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		736AF1DB2BACAA290021BE81 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				736AF2092BADDB4E0021BE81 /* Networking */,
 				736AF1D92BACAA290021BE81 /* AppDelegate.swift */,
 				736AF1DB2BACAA290021BE81 /* SceneDelegate.swift */,
+				733ADB672BB20AD900FF42D6 /* DetailViewController.swift */,
 				736AF1DD2BACAA290021BE81 /* ViewController.swift */,
 				736AF1E22BACAA2B0021BE81 /* Assets.xcassets */,
 				736AF1E42BACAA2B0021BE81 /* LaunchScreen.storyboard */,
@@ -334,6 +337,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				733ADB682BB20AD900FF42D6 /* DetailViewController.swift in Sources */,
 				736AF20F2BADDEA40021BE81 /* NetworkingMainFile.swift in Sources */,
 				736AF2112BADE23C0021BE81 /* SearchItems.swift in Sources */,
 				736AF2142BADE28F0021BE81 /* SearchResultModel.swift in Sources */,

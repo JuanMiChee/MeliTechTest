@@ -47,7 +47,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if cleanedText == "" { 
           self.viewModel.viewContent.texts = []
           self.defaultBackgroundText.text = "typeSomething :)"
-        }
+        } else if await self.viewModel.dependencies.searchItemsUseCase.execute(query: cleanedText) == [] {
+            self.defaultBackgroundText.text = "No items found..."
+          }
         self.tableView.reloadData()
       }
     }
@@ -115,6 +117,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return viewModel.viewContent.texts.count
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+    //Revisar si esto se debe pasar así
+    let detailVC = DetailViewController(tittle: viewModel.viewContent.texts[indexPath.row], detail: "detalle")
+    show(detailVC, sender: self)
   }
 }
 
