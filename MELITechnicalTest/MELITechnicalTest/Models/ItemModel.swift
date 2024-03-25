@@ -11,5 +11,8 @@ struct Item: Codable {
   let id: String
   let title: String
   let thumbnail: String
-  let condition: String
+  let price: Double
+  let officialStoreName: String
+  let acceptsMercadoPago: Bool
+  let seller: Seller
 }

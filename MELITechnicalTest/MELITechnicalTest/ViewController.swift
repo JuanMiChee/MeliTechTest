@@ -24,6 +24,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     setupDefaultBackgroundText()
     setupActivityIndicator()
     setupConstrains()
+    Task {
+      await viewModel.searchItem(query: "iph")
+      self.tableView.reloadData()
+    }
   }
   
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -32,7 +36,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
       let cleanedText = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
       print("Texto cambiado en la barra de búsqueda: \(searchText)")
       Task {
-        if let searchText = searchBar.text {
+        if searchBar.text != nil {
           if searchBar.text != "" {
             if !cleanedText.isEmpty {
               print("Se presionó el botón de búsqueda. Texto buscado: \(cleanedText)")
@@ -45,7 +49,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
           }
         }
         if cleanedText == "" { 
-          self.viewModel.viewContent.texts = []
+          self.viewModel.viewContent.results = []
           self.defaultBackgroundText.text = "typeSomething :)"
         } else if await self.viewModel.dependencies.searchItemsUseCase.execute(query: cleanedText) == [] {
             self.defaultBackgroundText.text = "No items found..."
@@ -110,20 +114,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: .default, reuseIdentifier: "Cell")
-    cell.textLabel?.text = "\(viewModel.viewContent.texts[indexPath.row])"
+    cell.textLabel?.text = "\(viewModel.viewContent.results[indexPath.row])"
     
     return cell
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return viewModel.viewContent.texts.count
+    return viewModel.viewContent.results.count
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    tableView.deselectRow(at: indexPath, animated: true)
-    //Revisar si esto se debe pasar así
-    let detailVC = DetailViewController(tittle: viewModel.viewContent.texts[indexPath.row], detail: "detalle")
-    show(detailVC, sender: self)
+//    tableView.deselectRow(at: indexPath, animated: true)
+//    //Revisar si esto se debe pasar así
+//    let detailVC = DetailViewController(tittle: viewModel.viewContent.texts[indexPath.row], detail: "detalle")
+//    show(detailVC, sender: self)
   }
 }
 

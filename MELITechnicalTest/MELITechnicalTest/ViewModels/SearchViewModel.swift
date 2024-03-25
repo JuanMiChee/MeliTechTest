@@ -9,7 +9,7 @@ import Foundation
 
 class SearchViewModel: ObservableObject {
   
-  var viewContent: SearchResultViewContent = .init(texts: [""])
+  var viewContent: SearchResultViewContent = .init(results: [])
   
   struct Dependencies {
     let searchItemsUseCase: SearchItemsProtocol
@@ -22,6 +22,6 @@ class SearchViewModel: ObservableObject {
   }
   
   func searchItem(query: String) async {
-    viewContent.texts = await dependencies.searchItemsUseCase.execute(query: query)
+    viewContent.results = await dependencies.searchItemsUseCase.execute(query: query)
   }
 }

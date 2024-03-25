@@ -6,6 +6,10 @@
 //
 
 import Foundation
-struct SearchResultViewContent {
-  var texts: [String]
+struct SearchResultViewContent: Equatable {
+  static func == (lhs: SearchResultViewContent, rhs: SearchResultViewContent) -> Bool {
+    true
+  }
+  
+  var results: [ItemForViewModel]
 }
