@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		733ADB682BB20AD900FF42D6 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733ADB672BB20AD900FF42D6 /* DetailViewController.swift */; };
+		733ADB6A2BB2260200FF42D6 /* SellerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733ADB692BB2260200FF42D6 /* SellerModel.swift */; };
 		736AF1DA2BACAA290021BE81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736AF1D92BACAA290021BE81 /* AppDelegate.swift */; };
 		736AF1DC2BACAA290021BE81 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736AF1DB2BACAA290021BE81 /* SceneDelegate.swift */; };
 		736AF1DE2BACAA290021BE81 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736AF1DD2BACAA290021BE81 /* ViewController.swift */; };
@@ -45,6 +46,7 @@
 
 /* Begin PBXFileReference section */
 		733ADB672BB20AD900FF42D6 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		733ADB692BB2260200FF42D6 /* SellerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellerModel.swift; sourceTree = "<group>"; };
 		736AF1D62BACAA290021BE81 /* MELITechnicalTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MELITechnicalTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		736AF1D92BACAA290021BE81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		736AF1DB2BACAA290021BE81 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				736AF2152BADE2AB0021BE81 /* ItemModel.swift */,
 				736AF2172BADE2CD0021BE81 /* ItemForViewModel.swift */,
 				736AF2192BADE2DA0021BE81 /* SeachResultForViewModel.swift */,
+				733ADB692BB2260200FF42D6 /* SellerModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -347,6 +350,7 @@
 				736AF21C2BADE3C30021BE81 /* SearchViewModel.swift in Sources */,
 				736AF21F2BADED5E0021BE81 /* searchResultViewContent.swift in Sources */,
 				736AF1DA2BACAA290021BE81 /* AppDelegate.swift in Sources */,
+				733ADB6A2BB2260200FF42D6 /* SellerModel.swift in Sources */,
 				736AF2162BADE2AB0021BE81 /* ItemModel.swift in Sources */,
 				736AF1DC2BACAA290021BE81 /* SceneDelegate.swift in Sources */,
 			);

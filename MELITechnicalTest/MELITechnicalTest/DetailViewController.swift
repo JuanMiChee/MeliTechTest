@@ -39,7 +39,6 @@ class DetailViewController: UIViewController {
     viewTitle.textColor = .black
     viewTitle.font = UIFont.systemFont(ofSize: 20)
     viewTitle.textAlignment = .center
-    viewTitle.frame = CGRect(x: 90, y: 500, width: 200, height: 50)
     view.addSubview(viewTitle)
   }
   
@@ -48,7 +47,6 @@ class DetailViewController: UIViewController {
     viewDetail.textColor = .black
     viewDetail.font = UIFont.systemFont(ofSize: 20)
     viewDetail.textAlignment = .center
-    viewDetail.frame = CGRect(x: 70, y: 450, width: 200, height: 50)
     view.addSubview(viewDetail)
   }
   
@@ -63,6 +61,7 @@ class DetailViewController: UIViewController {
       viewTitle.bottomAnchor.constraint(equalTo: viewDetail.topAnchor),
     ])
     NSLayoutConstraint.activate([
+      viewTitle.topAnchor.constraint(equalTo: viewTitle.topAnchor),
       viewDetail.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       viewDetail.trailingAnchor.constraint(equalTo: view.trailingAnchor),
       viewDetail.bottomAnchor.constraint(equalTo: view.bottomAnchor),
