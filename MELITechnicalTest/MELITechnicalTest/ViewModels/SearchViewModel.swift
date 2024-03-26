@@ -27,7 +27,12 @@ class SearchViewModel: ObservableObject {
     viewContent.results = await dependencies.searchItemsUseCase.execute(query: query)
   }
   
-  func searchImage(url: URL) async -> UIImageView {
-    dependencies.downloadImageProtocol.execute(url: url)
+  func searchImage(url: URL) async -> UIImage {
+    do {
+      return try await dependencies.downloadImageProtocol.execute(url: url)
+    } catch {
+      print(error.localizedDescription)
+      return UIImage(named: "1")!
+    }
   }
 }

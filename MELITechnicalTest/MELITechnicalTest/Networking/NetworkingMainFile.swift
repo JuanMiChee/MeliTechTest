@@ -28,27 +28,14 @@ struct NetworkingMainFile {
     }
   }
   
-  func downloadImage(url: URL) -> UIImageView {
-    var imageToReturn: UIImageView = UIImageView()
-    let task = session.dataTask(with: url) { data, response, error in
-      if let error = error {
-        print("Error al descargar la imagen: \(error.localizedDescription)")
-        return
-      }
-      guard let data = data else {
-        print("No se recibieron datos de la imagen")
-        return
-      }
-      if let image = UIImage(data: data) {
-        DispatchQueue.main.async {
-          let imageView = UIImageView(image: image)
-          imageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-          imageToReturn = imageView
-        }
-      } else {
-        print("No se pudo crear la imagen desde los datos")
-      }
+  func downloadImage(url: URL) async throws -> UIImage {
+    let (data, _) = try await URLSession.shared.data(from: url)
+    guard let image = UIImage(data: data) else {
+      throw ImageDownloadError.failedToCreateImage
     }
-    return imageToReturn
+    return image
+  }
+  enum ImageDownloadError: Error {
+    case failedToCreateImage
   }
 }
