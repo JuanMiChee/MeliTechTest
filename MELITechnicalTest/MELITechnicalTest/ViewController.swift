@@ -7,6 +7,10 @@
 
 import UIKit
 
+class CustomTableViewCell: UITableViewCell {
+  var cellImageView: UIImageView!
+}
+
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
   
   var tableView = UITableView()
@@ -115,8 +119,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: .default, reuseIdentifier: "Cell")
-    cell.textLabel?.text = "\(viewModel.viewContent.results[indexPath.row].title)"
+    var content = cell.defaultContentConfiguration()
+    content.imageProperties.maximumSize = CGSize(width: 100, height: 100)
     
+    Task {
+      let image = await viewModel.searchImage(url: URL(string: viewModel.viewContent.results[indexPath.row].thumbnail)!)
+      content.image = image
+      content.text = "\(viewModel.viewContent.results[indexPath.row].title)"
+      cell.contentConfiguration = content
+    }
     return cell
   }
   
