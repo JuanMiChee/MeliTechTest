@@ -13,7 +13,6 @@ struct ItemForViewModel: Codable, Equatable {
     lhs.title == rhs.title &&
     lhs.thumbnail == rhs.thumbnail &&
     lhs.price == rhs.price &&
-    lhs.officialStoreName == rhs.officialStoreName &&
     lhs.acceptsMercadoPago == rhs.acceptsMercadoPago &&
     lhs.seller == rhs.seller
   }
@@ -22,7 +21,6 @@ struct ItemForViewModel: Codable, Equatable {
   let title: String
   let thumbnail: String
   let price: Double
-  let officialStoreName: String
   let acceptsMercadoPago: Bool
   let seller: Seller
 }
