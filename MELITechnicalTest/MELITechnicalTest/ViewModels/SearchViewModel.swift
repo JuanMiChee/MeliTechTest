@@ -11,6 +11,7 @@ import UIKit
 class SearchViewModel: ObservableObject {
   
   var viewContent: SearchResultViewContent = .init(results: [])
+  var timer = Timer()
   
   struct Dependencies {
     let searchItemsUseCase: SearchItemsProtocol
@@ -27,12 +28,23 @@ class SearchViewModel: ObservableObject {
     viewContent.results = await dependencies.searchItemsUseCase.execute(query: query)
   }
   
-  func searchImage(url: URL) async -> UIImage {
+  func searchImage(indexPath: Int) async -> UIImage {
     do {
-      return try await dependencies.downloadImageProtocol.execute(url: url)
+      return try await dependencies.downloadImageProtocol.execute(url: URL(string: viewContent.results[indexPath].thumbnail)!)
     } catch {
       print(error.localizedDescription)
       return UIImage(named: "1")!
+    }
+  }
+  
+  func setBackgroundText(searchBarTextState: String) async -> String {
+    if searchBarTextState == "" {
+      viewContent.results = []
+      return "Escribe algo :)"
+    } else if await dependencies.searchItemsUseCase.execute(query: searchBarTextState) == [] {
+      return "No items encontrados"
+    } else {
+      return ""
     }
   }
 }
