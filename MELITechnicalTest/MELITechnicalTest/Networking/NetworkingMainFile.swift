@@ -6,10 +6,12 @@
 //
 
 import Foundation
-
-import Foundation
+import UIKit
 
 struct NetworkingMainFile {
+  
+  let session = URLSession.shared
+  
   func searchMercadoLibre(siteID: String, query: String) async throws -> SearchResult {
     let urlString = "https://api.mercadolibre.com/sites/\(siteID)/search?q=\(query)"
     guard let url = URL(string: urlString) else {
@@ -26,18 +28,27 @@ struct NetworkingMainFile {
     }
   }
   
-  // Uso de la función
-  let siteID = "MCO" // Puedes cambiar esto según el sitio de MercadoLibre que desees
-  let query = "Motorola G6"
-  //searchMercadoLibre(siteID: siteID, query: query) { result in
-  //  switch result {
-  //  case .success(let searchResult):
-  //    print("Resultados de la búsqueda:")
-  //    for item in searchResult.results {
-  //      print("ID: \(item.id), Título: \(item.title), Precio: \(item.price)")
-  //    }
-  //  case .failure(let error):
-  //    print("Error al realizar la búsqueda:", error)
-  //  }
-  //}
+  func downloadImage(url: URL) -> UIImageView {
+    var imageToReturn: UIImageView = UIImageView()
+    let task = session.dataTask(with: url) { data, response, error in
+      if let error = error {
+        print("Error al descargar la imagen: \(error.localizedDescription)")
+        return
+      }
+      guard let data = data else {
+        print("No se recibieron datos de la imagen")
+        return
+      }
+      if let image = UIImage(data: data) {
+        DispatchQueue.main.async {
+          let imageView = UIImageView(image: image)
+          imageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+          imageToReturn = imageView
+        }
+      } else {
+        print("No se pudo crear la imagen desde los datos")
+      }
+    }
+    return imageToReturn
+  }
 }

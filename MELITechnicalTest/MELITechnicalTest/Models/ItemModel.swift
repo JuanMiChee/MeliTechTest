@@ -12,7 +12,6 @@ struct Item: Codable {
   let title: String
   let thumbnail: String
   let price: Double
-  let officialStoreName: String
-  let acceptsMercadoPago: Bool
+  let accepts_mercadopago: Bool
   let seller: Seller
 }

@@ -9,16 +9,14 @@ import UIKit
 
 class DetailViewController: UIViewController {
   
-  let tittle: String
-  let detail: String
+  let item: ItemForViewModel
   
   let viewTitle = UILabel()
   let viewDetail = UILabel()
   let image = UIImage()
   
-  init(tittle: String, detail: String) {
-    self.tittle = tittle
-    self.detail = detail
+  init(item: ItemForViewModel) {
+    self.item = item
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -35,7 +33,7 @@ class DetailViewController: UIViewController {
   }
   
   func setupTitleLabel() {
-    viewTitle.text = self.tittle
+    viewTitle.text = self.item.title
     viewTitle.textColor = .black
     viewTitle.font = UIFont.systemFont(ofSize: 20)
     viewTitle.textAlignment = .center
@@ -43,7 +41,7 @@ class DetailViewController: UIViewController {
   }
   
   func setupDetailLabel() {
-    viewDetail.text = self.detail
+    viewDetail.text = "\(self.item.price)"
     viewDetail.textColor = .black
     viewDetail.font = UIFont.systemFont(ofSize: 20)
     viewDetail.textAlignment = .center

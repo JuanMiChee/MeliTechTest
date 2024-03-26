@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class SearchViewModel: ObservableObject {
   
@@ -13,6 +14,7 @@ class SearchViewModel: ObservableObject {
   
   struct Dependencies {
     let searchItemsUseCase: SearchItemsProtocol
+    let downloadImageProtocol: DownloadImageProtocol
   }
   
   let dependencies: Dependencies
@@ -23,5 +25,9 @@ class SearchViewModel: ObservableObject {
   
   func searchItem(query: String) async {
     viewContent.results = await dependencies.searchItemsUseCase.execute(query: query)
+  }
+  
+  func searchImage(url: URL) async -> UIImageView {
+    dependencies.downloadImageProtocol.execute(url: url)
   }
 }

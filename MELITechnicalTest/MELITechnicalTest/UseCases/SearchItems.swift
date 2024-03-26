@@ -21,8 +21,7 @@ struct SearchItems: SearchItemsProtocol {
                          title: item.title,
                          thumbnail: item.thumbnail,
                          price: item.price,
-                         officialStoreName: item.officialStoreName,
-                         acceptsMercadoPago: item.acceptsMercadoPago,
+                         acceptsMercadoPago: item.accepts_mercadopago,
                          seller: item.seller)
       })
     } catch {

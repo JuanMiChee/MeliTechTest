@@ -15,7 +15,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
   var activityIndicator = UIActivityIndicatorView()
   var defaultBackgroundText = UILabel()
   
-  let viewModel = SearchViewModel(dependencies: .init(searchItemsUseCase: SearchItems(netWorking: NetworkingMainFile())))
+  let viewModel = SearchViewModel(dependencies: .init(searchItemsUseCase: SearchItems(netWorking: NetworkingMainFile()),
+                                                      downloadImageProtocol: DownloadImage(netWorking: NetworkingMainFile())))
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -114,7 +115,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: .default, reuseIdentifier: "Cell")
-    cell.textLabel?.text = "\(viewModel.viewContent.results[indexPath.row])"
+    cell.textLabel?.text = "\(viewModel.viewContent.results[indexPath.row].title)"
     
     return cell
   }
@@ -124,10 +125,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    tableView.deselectRow(at: indexPath, animated: true)
-//    //Revisar si esto se debe pasar así
-//    let detailVC = DetailViewController(tittle: viewModel.viewContent.texts[indexPath.row], detail: "detalle")
-//    show(detailVC, sender: self)
+    tableView.deselectRow(at: indexPath, animated: true)
+    let detailVC = DetailViewController(item: viewModel.viewContent.results[indexPath.item])
+    show(detailVC, sender: self)
   }
 }
 
