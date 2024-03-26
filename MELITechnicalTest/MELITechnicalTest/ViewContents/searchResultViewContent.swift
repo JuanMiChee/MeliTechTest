@@ -8,7 +8,7 @@
 import Foundation
 struct SearchResultViewContent: Equatable {
   static func == (lhs: SearchResultViewContent, rhs: SearchResultViewContent) -> Bool {
-    true
+    return lhs.results == rhs.results
   }
   
   var results: [ItemForViewModel]
