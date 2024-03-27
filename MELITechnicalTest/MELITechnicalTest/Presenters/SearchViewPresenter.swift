@@ -37,7 +37,7 @@ class SearchViewPresenter: ObservableObject {
         view?.refreshList(searchResults: viewContent)
         setBackgroundText(searchBarText: query)
       } catch {
-        print("error: \(error)")
+        showErrorAlert(text: error.localizedDescription)
       }
     }
   }
@@ -46,9 +46,13 @@ class SearchViewPresenter: ObservableObject {
     do {
       return try await dependencies.downloadImageProtocol.execute(url: URL(string: viewContent.results[indexPath].thumbnail)!)
     } catch {
-      print(error.localizedDescription)
+      view?.showAlert(text: error.localizedDescription)
       return UIImage(named: "1")!
     }
+  }
+  
+  private func showErrorAlert(text: String) {
+    view?.showAlert(text: text)
   }
   
   private func setBackgroundText(searchBarText: String) {
@@ -60,5 +64,16 @@ class SearchViewPresenter: ObservableObject {
     } else {
       view?.showBackgroundText(text: "")
     }
+  }
+  
+  func showAlert(title: String, message: String, viewController: UIViewController) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    
+    // Agregar un botón "OK" para cerrar la alerta
+    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+    alertController.addAction(okAction)
+    
+    // Presentar la alerta
+    viewController.present(alertController, animated: true, completion: nil)
   }
 }

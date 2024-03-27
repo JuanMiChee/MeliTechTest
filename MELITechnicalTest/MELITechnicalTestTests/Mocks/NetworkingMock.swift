@@ -8,13 +8,18 @@
 import Foundation
 import UIKit
 
-struct NetworkingMainFileMock {
+class NetworkingMainFileMock {
   
-  let error: Error?
-  let image: UIImage?
-  let searchResult: SearchResult?
+  var error: Error? = nil
+  var image: UIImage? = nil
+  var searchResult: SearchResult? = nil
+  var query: String? = nil
+  var siteID: String? = nil
   
   func searchMercadoLibre(siteID: String, query: String) async throws -> SearchResult {
+    self.query = query
+    self.siteID = siteID
+    
     if let error {
       throw error
     } else {

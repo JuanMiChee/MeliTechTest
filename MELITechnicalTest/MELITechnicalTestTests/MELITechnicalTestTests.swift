@@ -7,22 +7,25 @@
 
 import XCTest
 @testable import MELITechnicalTest
-
+@MainActor
 final class MELITechnicalTestTests: XCTestCase {
   
   var sut: SearchViewPresenter!
   
+  var view: ProductListViewControllerMock!
+  var searchItemMock: SearchItemsMock!
+  var downloadImageMock: DownloadImageMock!
+  
+  
   var networking: NetworkingMainFileMock!
   
   override func setUpWithError() throws {
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-    
-    fetchData = FetchDataMock()
-    view = DetailMockView()
-    storage = StorageMock()
+    view = ProductListViewControllerMock()
+    searchItemMock = SearchItemsMock()
+    downloadImageMock = DownloadImageMock()
     
     //sut instantiation
-    sut = DetailViewPresenter(fetchData: fetchData, fetchCoreData: storage)
+    sut = SearchViewPresenter(dependencies: .init(searchItemsUseCase: searchItemMock, downloadImageProtocol: downloadImageMock))
     sut.view = view
   }
   
@@ -31,19 +34,95 @@ final class MELITechnicalTestTests: XCTestCase {
   }
   
   
-  func testExample() throws {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-    // Any test you write for XCTest can be annotated as throws and async.
-    // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-    // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+  func testVerifySearchUseCaseRecivesQuery() async throws {
+    //Given
+    let currentSeachbarQuery: String = "iphone"
+    await sut.searchItem(query: currentSeachbarQuery)
+    
+    
+    //When
+    let useCaseData = searchItemMock.query
+    
+    //then
+    XCTAssertEqual(useCaseData, "iphone")
   }
   
-  func testPerformanceExample() throws {
-    // This is an example of a performance test case.
-    self.measure {
-      // Put the code you want to measure the time of here.
-    }
+  func testVerifyGetImageUseCaseRecivesUrl() async throws {
+    //Given
+    let currentItem: [ItemModel] = [ItemModel(id: "", title: "", thumbnail: "someUrl", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))]
+    
+    //When
+    
+    sut.viewContent.results = currentItem
+    await sut.searchImage(indexPath: 0)
+    
+    
+    //then
+    let useCaseData = downloadImageMock.url
+    XCTAssertEqual(useCaseData, URL(string: "someUrl"))
   }
   
+  func testVerifyDataIsNotGettingToView() async throws {
+    //Given
+    let currentSeachbarQuery: String = "iphone"
+    await sut.searchItem(query: currentSeachbarQuery)
+    
+    
+    //When
+    let viewData = view.text
+    
+    //then
+    XCTAssertEqual(viewData, "No items encontrados")
+  }
+  
+  func testVerifyDataIsNotGettingToViewTwo() async throws {
+    //Given
+    let currentSeachbarQuery: String = "iphone"
+    await sut.searchItem(query: currentSeachbarQuery)
+    
+    
+    //When
+    let viewData = view.searchResults
+    
+    //then
+    XCTAssertEqual(viewData, SearchResultViewContent(results: []))
+  }
+  
+  func testVerifyDataIsGettingToView() async throws {
+    //Given
+    let currentSeachbarQuery: String = "iphone"
+    searchItemMock.searchResults = [ItemModel(id: "123", title: "", thumbnail: "", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))]
+    
+    //When
+    await sut.searchItem(query: currentSeachbarQuery)
+    
+    //then
+    let viewData = view.searchResults
+    XCTAssertEqual(viewData, SearchResultViewContent(results: [ItemModel(id: "123", title: "", thumbnail: "", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))]))
+  }
+  
+  func testVerifySeachrItemsIsReturningCorrectly() async {
+    //Given
+    let currentItem: [ItemModel] = [ItemModel(id: "", title: "", thumbnail: "someUrl", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))]
+    searchItemMock.searchResults = currentItem
+    
+    //When
+    await sut.searchItem(query: "Some")
+    
+    //then
+    let useCaseData = searchItemMock.searchResults
+    XCTAssertEqual(useCaseData, [ItemModel(id: "", title: "", thumbnail: "someUrl", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))])
+  }
+  
+  func testVeirfyCouldNotFetchItemsError() async {
+    let currentItem: [ItemModel] = [ItemModel(id: "", title: "", thumbnail: "someUrl", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))]
+    searchItemMock.searchResults = currentItem
+    
+    //When
+    await sut.searchItem(query: "Some")
+    
+    //then
+    let useCaseData = searchItemMock.searchResults
+    XCTAssertEqual(useCaseData, [ItemModel(id: "", title: "", thumbnail: "someUrl", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))])
+  }
 }

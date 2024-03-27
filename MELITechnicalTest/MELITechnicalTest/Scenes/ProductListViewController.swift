@@ -10,6 +10,7 @@ import UIKit
 protocol ProductListViewProtocol: AnyObject {
   func showBackgroundText(text: String)
   func refreshList(searchResults: SearchResultViewContent)
+  func showAlert(text: String)
 }
 
 class ProductListViewController: UIViewController {
@@ -19,6 +20,7 @@ class ProductListViewController: UIViewController {
   var timer = Timer()
   var activityIndicator = UIActivityIndicatorView()
   var defaultBackgroundText = UILabel()
+  var error: Error? = nil
   
   var result: SearchResultViewContent = .init(results: [])
   
@@ -51,6 +53,8 @@ class ProductListViewController: UIViewController {
     defaultBackgroundText.font = UIFont.systemFont(ofSize: 20)
     defaultBackgroundText.textAlignment = .center
     defaultBackgroundText.frame = CGRect(x: 90, y: 500, width: 200, height: 50)
+    defaultBackgroundText.numberOfLines = 0
+    defaultBackgroundText.lineBreakMode = .byWordWrapping
     view.addSubview(defaultBackgroundText)
   }
   
@@ -118,7 +122,6 @@ extension ProductListViewController: UITableViewDelegate, UITableViewDataSource 
     Task {
       let image = await viewPresenter.searchImage(indexPath: indexPath.row)
       content.image = image
-      
       content.text = "\(result.results[indexPath.row].title)"
       cell.contentConfiguration = content
     }
@@ -151,5 +154,8 @@ extension ProductListViewController: ProductListViewProtocol {
   func showBackgroundText(text: String) {
     self.defaultBackgroundText.text = text
   }
+  
+  func showAlert(text: String) {
+    viewPresenter.showAlert(title: "Error", message: text, viewController: self)
+  }
 }
-
