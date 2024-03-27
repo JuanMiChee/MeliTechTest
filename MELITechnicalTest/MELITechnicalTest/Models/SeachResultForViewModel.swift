@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct SearchResultForViewModel: Codable {
-  let results: [ItemForViewModel]
+struct SearchResultModel: Codable {
+  let results: [ItemModel]
 }

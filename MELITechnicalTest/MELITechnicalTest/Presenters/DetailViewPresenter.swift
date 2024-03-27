@@ -1,5 +1,5 @@
 //
-//  DetailViewModel.swift
+//  DetailViewPresenter.swift
 //  MELITechnicalTest
 //
 //  Created by Juan Harrington on 26/03/24.
@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-struct DetailViewModel {
-  var viewContent: DetailResultViewContent = .init(result: ItemForViewModel(id: "",
+struct DetailViewPresenter {
+  var viewContent: DetailResultViewContent = .init(result: ItemModel(id: "",
                                                                             title: "",
                                                                             thumbnail: "",
                                                                             price: 0,

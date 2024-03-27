@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol ProductListViewProtocol: AnyObject {
+  func showBackgroundText(text: String)
+  func refreshList(searchResults: SearchResultViewContent)
+}
+
 class ProductListViewController: UIViewController {
   
   var tableView = UITableView()
@@ -15,11 +20,15 @@ class ProductListViewController: UIViewController {
   var activityIndicator = UIActivityIndicatorView()
   var defaultBackgroundText = UILabel()
   
-  let viewModel = SearchViewModel(dependencies: .init(searchItemsUseCase: SearchItems(netWorking: NetworkingMainFile()),
+  var result: SearchResultViewContent = .init(results: [])
+  
+  let viewPresenter = SearchViewPresenter(dependencies: .init(searchItemsUseCase: SearchItems(netWorking: NetworkingMainFile()),
                                                       downloadImageProtocol: DownloadImage(netWorking: NetworkingMainFile())))
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    viewPresenter.view = self
+    result = viewPresenter.viewContent
     view.backgroundColor = .systemYellow
     setupTableView()
     setupSearchBar()
@@ -89,19 +98,12 @@ extension ProductListViewController: UISearchBarDelegate {
     timer.invalidate()
     timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
       let cleanedText = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-      
       Task {
-        
-        if cleanedText != "" {
           self.activityIndicator.startAnimating()
-          await self.viewModel.searchItem(query: cleanedText)
-          self.defaultBackgroundText.text = await self.viewModel.setBackgroundText(searchBarTextState: cleanedText)
+          await self.viewPresenter.searchItem(query: cleanedText)
           self.activityIndicator.stopAnimating()
           self.tableView.reloadData()
-        } else {
-          self.defaultBackgroundText.text = await self.viewModel.setBackgroundText(searchBarTextState: cleanedText)
-        }
-        self.tableView.reloadData()
+          self.tableView.reloadData()
       }
     }
   }
@@ -114,28 +116,40 @@ extension ProductListViewController: UITableViewDelegate, UITableViewDataSource 
     content.imageProperties.maximumSize = CGSize(width: 100, height: 100)
     
     Task {
-      let image = await viewModel.searchImage(indexPath: indexPath.row)
+      let image = await viewPresenter.searchImage(indexPath: indexPath.row)
       content.image = image
-      content.text = "\(viewModel.viewContent.results[indexPath.row].title)"
+      
+      content.text = "\(result.results[indexPath.row].title)"
       cell.contentConfiguration = content
     }
     return cell
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return viewModel.viewContent.results.count
+    return result.results.count
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     let detailVC = ProductDetailViewController(productViewModel: .init(dependencies: .init(downloadImageProtocol: DownloadImage(netWorking: NetworkingMainFile())), 
-                                                                       viewContent: DetailResultViewContent(result: ItemForViewModel(id: viewModel.viewContent.results[indexPath.item].id,
-                                                                                                                                     title: viewModel.viewContent.results[indexPath.item].title,
-                                                                                                                                     thumbnail: viewModel.viewContent.results[indexPath.item].thumbnail,
-                                                                                                                                     price: viewModel.viewContent.results[indexPath.item].price,
-                                                                                                                                     acceptsMercadoPago: viewModel.viewContent.results[indexPath.item].acceptsMercadoPago,
-                                                                                                                                     seller: viewModel.viewContent.results[indexPath.item].seller))))
+                                                                       viewContent: DetailResultViewContent(result: ItemModel(id: result.results[indexPath.item].id,
+                                                                                                                              title: result.results[indexPath.item].title,
+                                                                                                                              thumbnail: result.results[indexPath.item].thumbnail,
+                                                                                                                              price: result.results[indexPath.item].price,
+                                                                                                                              acceptsMercadoPago: result.results[indexPath.item].acceptsMercadoPago,
+                                                                                                                              seller: result.results[indexPath.item].seller))))
     show(detailVC, sender: self)
+  }
+}
+
+extension ProductListViewController: ProductListViewProtocol {
+  func refreshList(searchResults: SearchResultViewContent) {
+    self.result = searchResults
+    tableView.reloadData()
+  }
+  
+  func showBackgroundText(text: String) {
+    self.defaultBackgroundText.text = text
   }
 }
 

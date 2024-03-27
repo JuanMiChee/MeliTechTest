@@ -10,7 +10,7 @@ import Foundation
 struct SearchResult: Codable {
   let siteID: String
   let query: String
-  let results: [Item]
+  let results: [ItemJSON]
   
   enum CodingKeys: String, CodingKey {
     case siteID = "site_id"

@@ -12,5 +12,5 @@ struct DetailResultViewContent: Equatable {
     return lhs.result == rhs.result
   }
   
-  var result: ItemForViewModel
+  var result: ItemModel
 }

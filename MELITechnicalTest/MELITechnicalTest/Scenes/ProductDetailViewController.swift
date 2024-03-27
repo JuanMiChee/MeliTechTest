@@ -8,9 +8,9 @@
 import UIKit
 
 class ProductDetailViewController: UIViewController {
-  let viewModel: DetailViewModel
+  let viewModel: DetailViewPresenter
   
-  init(productViewModel: DetailViewModel) {
+  init(productViewModel: DetailViewPresenter) {
     self.viewModel = productViewModel
     super.init(nibName: nil, bundle: nil)
   }
@@ -96,7 +96,5 @@ class ProductDetailViewController: UIViewController {
     Task {
       thumbnailImageView.image = await viewModel.searchImage(url: viewModel.viewContent.result.thumbnail)
     }
-      
-
   }
 }
