@@ -25,13 +25,7 @@ class NetworkingMainFileMock {
     } else {
       return searchResult ?? .init(siteID: "",
                                    query: "",
-                                   results: [ItemJSON(id: "",
-                                                  title: "",
-                                                  thumbnail: "",
-                                                  price: 0,
-                                                  accepts_mercadopago: false,
-                                                  seller: Seller(id: 0,
-                                                                 nickname: ""))])
+                                   results: [])
     }
   }
   

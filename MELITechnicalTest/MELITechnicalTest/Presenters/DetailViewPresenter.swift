@@ -9,13 +9,9 @@ import Foundation
 import UIKit
 
 struct DetailViewPresenter {
-  var viewContent: DetailResultViewContent = .init(result: ItemModel(id: "",
-                                                                            title: "",
-                                                                            thumbnail: "",
-                                                                            price: 0,
-                                                                            acceptsMercadoPago: false,
-                                                                            seller: Seller(id: 0,
-                                                                                           nickname: "")))
+  private let viewContent: DetailResultViewContent
+  
+  weak var view: DetailViewProtocol?
   
   init(dependencies: Dependencies, viewContent: DetailResultViewContent) {
     self.viewContent = viewContent
@@ -23,17 +19,31 @@ struct DetailViewPresenter {
   }
   
   struct Dependencies {
-    let downloadImageProtocol: DownloadImageProtocol
+    let downloadImage: DownloadImageProtocol
   }
   
   let dependencies: Dependencies
   
-  func searchImage(url: String) async -> UIImage {
+  func searchImage(url: URL) async -> UIImage {
     do {
-      return try await dependencies.downloadImageProtocol.execute(url: URL(string: url)!)
+      return try await dependencies.downloadImage.execute(url: url)
     } catch {
       print(error.localizedDescription)
       return UIImage(named: "1")!
     }
+  }
+  
+  func handleViewDidLoad() {
+    Task {
+      await setUpViewData()
+    }
+  }
+  
+  private func setUpViewData() async {
+    await view?.setUpViewData(title: viewContent.result.title,
+                        price: "precio: \(viewContent.result.price)",
+                        acceptsMercadoPago: viewContent.result.acceptsMercadoPago ? "Acepta MercadoPago" : "No acepta MercadoPago",
+                        sellerNickName: viewContent.result.seller.nickname,
+                        thumnailImage: await searchImage(url: viewContent.result.thumbnail))
   }
 }

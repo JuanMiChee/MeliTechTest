@@ -8,13 +8,15 @@
 import Foundation
 
 class ProductListViewControllerMock: ProductListViewProtocol {
-  
-  
-  
   var text: String? = nil
   var searchResults: SearchResultViewContent? = nil
+  var alertText: String? = nil
   
   func showAlert(text: String) {
+    self.alertText = text
+  }
+  
+  func updateLoadingStatus(status: Bool) {
     
   }
   

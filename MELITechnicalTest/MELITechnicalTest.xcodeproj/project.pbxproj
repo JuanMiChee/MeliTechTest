@@ -142,7 +142,6 @@
 		736AF1D82BACAA290021BE81 /* MELITechnicalTest */ = {
 			isa = PBXGroup;
 			children = (
-				736AF21D2BADED4D0021BE81 /* New Group */,
 				736AF2122BADE2630021BE81 /* Models */,
 				736AF20D2BADDE940021BE81 /* UseCases */,
 				736AF20C2BADDE8E0021BE81 /* ViewContents */,
@@ -230,13 +229,6 @@
 				733ADB692BB2260200FF42D6 /* SellerModel.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		736AF21D2BADED4D0021BE81 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
