@@ -11,5 +11,5 @@ struct SearchResultViewContent: Equatable {
     return lhs.results == rhs.results
   }
   
-  var results: [ItemForViewModel]
+  var results: [ItemModel]
 }
