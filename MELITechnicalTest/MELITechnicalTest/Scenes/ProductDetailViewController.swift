@@ -49,7 +49,7 @@ class ProductDetailViewController: UIViewController {
   
   private let priceLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 16)
+    label.font = UIFont.systemFont(ofSize: 21)
     return label
   }()
   
@@ -83,9 +83,9 @@ class ProductDetailViewController: UIViewController {
     
     // Configurar constraints para el stackView
     NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+      stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+      stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+      stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
     ])
     
     NSLayoutConstraint.activate([ 
