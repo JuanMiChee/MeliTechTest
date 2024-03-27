@@ -8,20 +8,19 @@
 import Foundation
 
 protocol SearchItemsProtocol {
-  func execute() async -> [String]
+  func execute(query: String) async throws -> [ItemModel]
 }
 
 struct SearchItems: SearchItemsProtocol {
   let netWorking: NetworkingMainFile
-  func execute() async -> [String] {
-    var array: [String] = []
-    do {
-      array = try await netWorking.searchMercadoLibre(siteID: "MLA", query: "motorola").results.map({ item in
-        item.title
-      })
-    } catch {
-      print("error: \(error)")
+  func execute(query: String) async throws -> [ItemModel] {
+    return try await netWorking.searchMercadoLibre(siteID: "MLC", query: query).results.map { item in
+          ItemModel(id: item.id,
+                    title: item.title,
+                    thumbnail: item.thumbnail,
+                    price: item.price,
+                    acceptsMercadoPago: item.accepts_mercadopago,
+                    seller: item.seller)
     }
-    return array
   }
 }
