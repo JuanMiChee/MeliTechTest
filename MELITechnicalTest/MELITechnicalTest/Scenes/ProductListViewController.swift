@@ -11,6 +11,7 @@ protocol ProductListViewProtocol: AnyObject {
   func showBackgroundText(text: String)
   func refreshList(searchResults: SearchResultViewContent)
   func showAlert(text: String)
+  func updateLoadingStatus(status: Bool)
 }
 
 class ProductListViewController: UIViewController {
@@ -76,6 +77,7 @@ class ProductListViewController: UIViewController {
   func setupConstrains() {
     searchBar.translatesAutoresizingMaskIntoConstraints = false
     tableView.translatesAutoresizingMaskIntoConstraints = false
+    defaultBackgroundText.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
       searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -85,14 +87,13 @@ class ProductListViewController: UIViewController {
     NSLayoutConstraint.activate([
       tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
     ])
     
     NSLayoutConstraint.activate([
-      defaultBackgroundText.topAnchor.constraint(equalTo: view.topAnchor),
-      defaultBackgroundText.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      defaultBackgroundText.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      defaultBackgroundText.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      defaultBackgroundText.centerYAnchor.constraint(equalTo: tableView.centerYAnchor),
+      defaultBackgroundText.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
+      
     ])
   }
 }
@@ -103,11 +104,7 @@ extension ProductListViewController: UISearchBarDelegate {
     timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
       let cleanedText = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
       Task {
-          self.activityIndicator.startAnimating()
           await self.viewPresenter.searchItem(query: cleanedText)
-          self.activityIndicator.stopAnimating()
-          self.tableView.reloadData()
-          self.tableView.reloadData()
       }
     }
   }
@@ -134,13 +131,9 @@ extension ProductListViewController: UITableViewDelegate, UITableViewDataSource 
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    let detailVC = ProductDetailViewController(productViewModel: .init(dependencies: .init(downloadImageProtocol: DownloadImage(netWorking: NetworkingMainFile())), 
-                                                                       viewContent: DetailResultViewContent(result: ItemModel(id: result.results[indexPath.item].id,
-                                                                                                                              title: result.results[indexPath.item].title,
-                                                                                                                              thumbnail: result.results[indexPath.item].thumbnail,
-                                                                                                                              price: result.results[indexPath.item].price,
-                                                                                                                              acceptsMercadoPago: result.results[indexPath.item].acceptsMercadoPago,
-                                                                                                                              seller: result.results[indexPath.item].seller))))
+    let item = result.results[indexPath.item]
+    let detailVC = ProductDetailViewController(productViewModel: .init(dependencies: .init(downloadImage: DownloadImage(netWorking: NetworkingMainFile())),
+                                                                       viewContent: DetailResultViewContent(result: item)))
     show(detailVC, sender: self)
   }
 }
@@ -157,5 +150,13 @@ extension ProductListViewController: ProductListViewProtocol {
   
   func showAlert(text: String) {
     viewPresenter.showAlert(title: "Error", message: text, viewController: self)
+  }
+  
+  func updateLoadingStatus(status: Bool) {
+    if status {
+      self.activityIndicator.startAnimating()
+    } else {
+      self.activityIndicator.stopAnimating()
+    }
   }
 }

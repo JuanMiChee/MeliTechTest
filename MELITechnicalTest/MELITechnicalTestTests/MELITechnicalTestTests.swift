@@ -10,11 +10,13 @@ import XCTest
 @MainActor
 final class MELITechnicalTestTests: XCTestCase {
   
+  
+  
   var sut: SearchViewPresenter!
   
   var view: ProductListViewControllerMock!
   var searchItemMock: SearchItemsMock!
-  var downloadImageMock: DownloadImageMock!
+  var searchImageMock: DownloadImageMock!
   
   
   var networking: NetworkingMainFileMock!
@@ -22,10 +24,10 @@ final class MELITechnicalTestTests: XCTestCase {
   override func setUpWithError() throws {
     view = ProductListViewControllerMock()
     searchItemMock = SearchItemsMock()
-    downloadImageMock = DownloadImageMock()
+    searchImageMock = DownloadImageMock()
     
     //sut instantiation
-    sut = SearchViewPresenter(dependencies: .init(searchItemsUseCase: searchItemMock, downloadImageProtocol: downloadImageMock))
+    sut = SearchViewPresenter(dependencies: .init(searchItemsUseCase: searchItemMock, downloadImageProtocol: searchImageMock))
     sut.view = view
   }
   
@@ -39,7 +41,6 @@ final class MELITechnicalTestTests: XCTestCase {
     let currentSeachbarQuery: String = "iphone"
     await sut.searchItem(query: currentSeachbarQuery)
     
-    
     //When
     let useCaseData = searchItemMock.query
     
@@ -49,16 +50,15 @@ final class MELITechnicalTestTests: XCTestCase {
   
   func testVerifyGetImageUseCaseRecivesUrl() async throws {
     //Given
-    let currentItem: [ItemModel] = [ItemModel(id: "", title: "", thumbnail: "someUrl", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))]
+    let currentItem: [ItemModel] = [ItemModel(id: "", title: "", thumbnail: URL(string: "someUrl")!, price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))]
     
     //When
-    
     sut.viewContent.results = currentItem
-    await sut.searchImage(indexPath: 0)
+    let _ =  await sut.searchImage(indexPath: 0)
     
     
     //then
-    let useCaseData = downloadImageMock.url
+    let useCaseData = searchImageMock.url
     XCTAssertEqual(useCaseData, URL(string: "someUrl"))
   }
   
@@ -66,7 +66,6 @@ final class MELITechnicalTestTests: XCTestCase {
     //Given
     let currentSeachbarQuery: String = "iphone"
     await sut.searchItem(query: currentSeachbarQuery)
-    
     
     //When
     let viewData = view.text
@@ -80,7 +79,6 @@ final class MELITechnicalTestTests: XCTestCase {
     let currentSeachbarQuery: String = "iphone"
     await sut.searchItem(query: currentSeachbarQuery)
     
-    
     //When
     let viewData = view.searchResults
     
@@ -91,19 +89,19 @@ final class MELITechnicalTestTests: XCTestCase {
   func testVerifyDataIsGettingToView() async throws {
     //Given
     let currentSeachbarQuery: String = "iphone"
-    searchItemMock.searchResults = [ItemModel(id: "123", title: "", thumbnail: "", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))]
+    searchItemMock.searchResults = [makeItem()]
     
     //When
     await sut.searchItem(query: currentSeachbarQuery)
     
     //then
     let viewData = view.searchResults
-    XCTAssertEqual(viewData, SearchResultViewContent(results: [ItemModel(id: "123", title: "", thumbnail: "", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))]))
+    XCTAssertEqual(viewData, SearchResultViewContent(results: [makeItem()]))
   }
   
   func testVerifySeachrItemsIsReturningCorrectly() async {
     //Given
-    let currentItem: [ItemModel] = [ItemModel(id: "", title: "", thumbnail: "someUrl", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))]
+    let currentItem: [ItemModel] = [makeItem()]
     searchItemMock.searchResults = currentItem
     
     //When
@@ -111,18 +109,41 @@ final class MELITechnicalTestTests: XCTestCase {
     
     //then
     let useCaseData = searchItemMock.searchResults
-    XCTAssertEqual(useCaseData, [ItemModel(id: "", title: "", thumbnail: "someUrl", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))])
+    XCTAssertEqual(useCaseData, [makeItem()])
   }
   
-  func testVeirfyCouldNotFetchItemsError() async {
-    let currentItem: [ItemModel] = [ItemModel(id: "", title: "", thumbnail: "someUrl", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))]
-    searchItemMock.searchResults = currentItem
+  func testVeirfyCouldNotFetchItemsWithError() async {
+    let errorDescription = NSLocalizedString("Ocurrió un error al cargar los datos.", comment: "Mensaje de error")
+    let error = NSError(domain: "com.tuapp.errorDomain", code: 1001, userInfo: [NSLocalizedDescriptionKey: errorDescription])
+    searchItemMock.error = error
     
     //When
-    await sut.searchItem(query: "Some")
+    await sut.searchItem(query: "q")
+
+    //then
+    let viewData = view.alertText
+    XCTAssertEqual(viewData, "Ocurrió un error al cargar los datos.")
+  }
+  
+  func testVeirfyCouldNotFetchImageWithError() async {
+    let errorDescription = NSLocalizedString("Ocurrió un error al cargar los datos.", comment: "Mensaje de error")
+    let error = NSError(domain: "com.tuapp.errorDomain", code: 1001, userInfo: [NSLocalizedDescriptionKey: errorDescription])
+    searchImageMock.error = error
+    
+    let currentItem: [ItemModel] = [makeItem()]
+    
+    //When
+    sut.viewContent.results = currentItem
+    
+    //When
+    let _ = await sut.searchImage(indexPath: 0)
     
     //then
-    let useCaseData = searchItemMock.searchResults
-    XCTAssertEqual(useCaseData, [ItemModel(id: "", title: "", thumbnail: "someUrl", price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))])
+    let viewData = view.alertText
+    XCTAssertEqual(viewData, "Ocurrió un error al cargar los datos.")
+  }
+  
+  private func makeItem() -> ItemModel{
+    ItemModel(id: "", title: "", thumbnail: URL(string: "someUrl")!, price: 0, acceptsMercadoPago: false, seller: Seller(id: 0, nickname: ""))
   }
 }

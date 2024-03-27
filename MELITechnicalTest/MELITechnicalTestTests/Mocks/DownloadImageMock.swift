@@ -12,8 +12,8 @@ import UIKit
 @MainActor
 class DownloadImageMock: DownloadImageProtocol {
   
-  let error: Error? = nil
-  let image: UIImage? = nil
+  var error: Error? = nil
+  var image: UIImage? = nil
   var url: URL? = nil
   
   func execute(url: URL) async throws -> UIImage {

@@ -19,7 +19,7 @@ struct ItemModel: Codable, Equatable {
   
   let id: String
   let title: String
-  var thumbnail: String
+  var thumbnail: URL
   let price: Double
   let acceptsMercadoPago: Bool
   let seller: Seller

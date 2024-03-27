@@ -7,11 +7,17 @@
 
 import UIKit
 
+protocol DetailViewProtocol: AnyObject {
+  @MainActor
+  func setUpViewData(title: String, price: String, acceptsMercadoPago: String, sellerNickName: String, thumnailImage: UIImage)
+}
+
+@MainActor
 class ProductDetailViewController: UIViewController {
-  let viewModel: DetailViewPresenter
+  var viewPresenter: DetailViewPresenter
   
   init(productViewModel: DetailViewPresenter) {
-    self.viewModel = productViewModel
+    self.viewPresenter = productViewModel
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -38,7 +44,6 @@ class ProductDetailViewController: UIViewController {
     let imageView = UIImageView()
     imageView.contentMode = .scaleAspectFit
     imageView.clipsToBounds = true
-    imageView.translatesAutoresizingMaskIntoConstraints = false
     return imageView
   }()
   
@@ -62,9 +67,10 @@ class ProductDetailViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    viewPresenter.view = self
     view.backgroundColor = .white
     setupViews()
-    configureView()
+    viewPresenter.handleViewDidLoad()
   }
   
   private func setupViews() {
@@ -78,23 +84,24 @@ class ProductDetailViewController: UIViewController {
     // Configurar constraints para el stackView
     NSLayoutConstraint.activate([
       stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-      stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+      stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
     ])
     
-    NSLayoutConstraint.activate([
-      thumbnailImageView.widthAnchor.constraint(equalToConstant: 300), 
-      thumbnailImageView.heightAnchor.constraint(equalToConstant: 300) 
+    NSLayoutConstraint.activate([ 
+      thumbnailImageView.heightAnchor.constraint(lessThanOrEqualToConstant: 300)
     ])
   }
   
-  private func configureView() {
-    titleLabel.text = viewModel.viewContent.result.title
-    priceLabel.text = "Price: \(viewModel.viewContent.result.price)"
-    acceptsMercadoPagoLabel.text = viewModel.viewContent.result.acceptsMercadoPago ? "Accepta MercadoPago" : "No accepta MercadoPago"
-    sellerNicknameLabel.text = "Seller: \(viewModel.viewContent.result.seller.nickname)"
-    Task {
-      thumbnailImageView.image = await viewModel.searchImage(url: viewModel.viewContent.result.thumbnail)
-    }
+  
+}
+
+extension ProductDetailViewController: DetailViewProtocol {
+  func setUpViewData(title: String, price: String, acceptsMercadoPago: String, sellerNickName: String, thumnailImage: UIImage) {
+    titleLabel.text = title
+    priceLabel.text = price
+    acceptsMercadoPagoLabel.text = acceptsMercadoPago
+    sellerNicknameLabel.text = sellerNickName
+    thumbnailImageView.image = thumnailImage
   }
 }

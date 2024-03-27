@@ -33,9 +33,11 @@ class SearchViewPresenter: ObservableObject {
       setBackgroundText(searchBarText: "")
     } else {
       do {
+        updateLoadingState(isLoading: true)
         viewContent.results = try await dependencies.searchItemsUseCase.execute(query: query)
         view?.refreshList(searchResults: viewContent)
         setBackgroundText(searchBarText: query)
+        updateLoadingState(isLoading: false)
       } catch {
         showErrorAlert(text: error.localizedDescription)
       }
@@ -44,10 +46,15 @@ class SearchViewPresenter: ObservableObject {
   
   func searchImage(indexPath: Int) async -> UIImage {
     do {
-      return try await dependencies.downloadImageProtocol.execute(url: URL(string: viewContent.results[indexPath].thumbnail)!)
+      let url = viewContent.results[indexPath].thumbnail
+      updateLoadingState(isLoading: true)
+      let image = try await dependencies.downloadImageProtocol.execute(url: url)
+      updateLoadingState(isLoading: false)
+      return image
     } catch {
+      updateLoadingState(isLoading: false)
       view?.showAlert(text: error.localizedDescription)
-      return UIImage(named: "1")!
+      return UIImage(systemName: "eye.trianglebadge.exclamationmark")!
     }
   }
   
@@ -64,6 +71,10 @@ class SearchViewPresenter: ObservableObject {
     } else {
       view?.showBackgroundText(text: "")
     }
+  }
+  
+  func updateLoadingState(isLoading: Bool) {
+    view?.updateLoadingStatus(status: isLoading)
   }
   
   func showAlert(title: String, message: String, viewController: UIViewController) {
