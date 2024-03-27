@@ -41,7 +41,7 @@ struct DetailViewPresenter {
   
   private func setUpViewData() async {
     await view?.setUpViewData(title: viewContent.result.title,
-                        price: "precio: \(viewContent.result.price)",
+                        price: "$ \(viewContent.result.price)",
                         acceptsMercadoPago: viewContent.result.acceptsMercadoPago ? "Acepta MercadoPago" : "No acepta MercadoPago",
                         sellerNickName: viewContent.result.seller.nickname,
                         thumnailImage: await searchImage(url: viewContent.result.thumbnail))
