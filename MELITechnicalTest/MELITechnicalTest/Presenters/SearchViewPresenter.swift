@@ -8,6 +8,13 @@
 import Foundation
 import UIKit
 
+protocol ProductListViewProtocol: AnyObject {
+  func showBackgroundText(text: String)
+  func refreshList(searchResults: SearchResultViewContent)
+  func showAlert(text: String)
+  func updateLoadingStatus(status: Bool)
+}
+
 @MainActor
 class SearchViewPresenter: ObservableObject {
   
