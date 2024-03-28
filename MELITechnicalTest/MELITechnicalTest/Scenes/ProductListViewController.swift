@@ -7,12 +7,7 @@
 
 import UIKit
 
-protocol ProductListViewProtocol: AnyObject {
-  func showBackgroundText(text: String)
-  func refreshList(searchResults: SearchResultViewContent)
-  func showAlert(text: String)
-  func updateLoadingStatus(status: Bool)
-}
+
 
 class ProductListViewController: UIViewController {
   

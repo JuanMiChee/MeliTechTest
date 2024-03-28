@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct NetworkingMainFile {
+struct NetworkingMainFile: NetworkingProtocol {
   
   let session = URLSession.shared
   
@@ -35,6 +35,7 @@ struct NetworkingMainFile {
     }
     return image
   }
+  
   enum ImageDownloadError: Error {
     case failedToCreateImage
   }
